@@ -1,0 +1,15 @@
+{
+  "name": "Card Forge",
+  "short_name": "Card Forge",
+  "description": "Do the work, open the packs: a study companion that pays out in holographic creature cards.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#120d1c",
+  "theme_color": "#120d1c",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

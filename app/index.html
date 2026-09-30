@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Card Forge</title>
+  <meta name="description" content="A study app that pays out in card packs: finish focus sessions and tasks, earn packs, and open holographic creature cards built from the SRD 5.1 bestiary. Works offline, nothing is uploaded.">
+  <meta name="theme-color" content="#120d1c">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/card.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="mark" aria-hidden="true"></span><h1 data-i18n="app.title">Card Forge</h1></div>
+    <p class="tagline" data-i18n="app.tagline"></p>
+    <div class="wallet mono" id="wallet" aria-live="polite"></div>
+    <div class="top-actions">
+      <label class="field"><span data-i18n="set.lang">Language</span><select id="set-lang" aria-label="Language"><option value="en">English</option><option value="tr">Türkçe</option></select></label>
+      <button class="tb danger" id="btn-reset" data-i18n="set.reset">Reset save</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+  <main class="main" id="main"></main>
+
+  <footer class="foot"><span data-i18n="foot.srd"></span> <a href="https://github.com/ardakalper/card-forge" data-i18n="foot.source">Source on GitHub</a></footer>
+  <div class="toast" id="toast" hidden role="status"></div>
+  <div class="reveal" id="reveal" hidden></div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

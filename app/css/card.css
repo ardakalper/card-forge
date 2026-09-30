@@ -1,0 +1,63 @@
+/* The trading card. Tilt and shine follow the pointer through --mx/--my (0..100) set by card.js. */
+.tcg { --mx: 50; --my: 50; --rx: 0deg; --ry: 0deg;
+  aspect-ratio: 5 / 7; width: 100%; border-radius: 10px; position: relative; isolation: isolate;
+  background: linear-gradient(165deg, var(--edge-hi) 0%, var(--edge) 30%, var(--edge-lo) 100%);
+  padding: 7px; transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform .18s ease-out; box-shadow: 0 10px 26px rgba(0, 0, 0, .5);
+  color: #17121f; font-family: var(--ui); user-select: none; cursor: pointer; border: 0; text-align: left; display: block;
+}
+.tcg.r-common { --edge: #8d97a3; --edge-hi: #c6cdd4; --edge-lo: #5c646e; }
+.tcg.r-uncommon { --edge: #3f9e57; --edge-hi: #8fd8a0; --edge-lo: #276437; }
+.tcg.r-rare { --edge: #3583cf; --edge-hi: #8ec4f2; --edge-lo: #1f5286; }
+.tcg.r-epic { --edge: #9040d0; --edge-hi: #cf97f2; --edge-lo: #5b2887; }
+.tcg.r-legendary { --edge: #cf8d28; --edge-hi: #f2d489; --edge-lo: #8a5a14; }
+.tcg .inner { background: linear-gradient(180deg, #f4eeda 0%, #e8dfc4 100%); border-radius: 5px; height: 100%; display: grid; grid-template-rows: auto 1fr auto auto auto; overflow: hidden; position: relative; z-index: 1; }
+.tcg .head { display: flex; align-items: baseline; gap: 6px; padding: 6px 9px 4px; }
+.tcg .name { font-family: var(--display); font-weight: 600; font-size: 13px; line-height: 1.12; flex: 1; }
+.tcg .cr { font-family: var(--mono); font-size: 11px; color: #5a4d3a; white-space: nowrap; }
+.tcg .art { position: relative; margin: 0 7px; border: 1.5px solid rgba(23, 18, 31, .55); border-radius: 4px; overflow: hidden; background: radial-gradient(ellipse at 50% 30%, var(--edge-hi) 0%, var(--edge-lo) 100%); display: grid; place-items: center; min-height: 0; }
+.tcg .art canvas { width: 88%; height: auto; image-rendering: pixelated; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .35)); }
+.tcg .typeline { font-size: 9.5px; letter-spacing: .05em; text-transform: uppercase; color: #4c4132; padding: 4px 9px 2px; display: flex; justify-content: space-between; gap: 6px; }
+.tcg .statrow { display: flex; gap: 4px; padding: 2px 7px; }
+.tcg .stat { flex: 1; background: rgba(23, 18, 31, .08); border: 1px solid rgba(23, 18, 31, .25); border-radius: 3px; text-align: center; padding: 2px 0 3px; }
+.tcg .stat b { display: block; font-family: var(--mono); font-weight: 400; font-size: 12px; }
+.tcg .stat span { font-size: 8px; letter-spacing: .08em; text-transform: uppercase; color: #5a4d3a; }
+.tcg .lines { padding: 3px 9px 7px; display: grid; gap: 2px; }
+.tcg .atk, .tcg .trait { font-size: 10px; line-height: 1.25; }
+.tcg .atk b, .tcg .trait b { font-weight: 500; }
+.tcg .trait { color: #4c4132; font-style: italic; }
+
+/* pointer-following glare, on every card */
+.tcg .shine { position: absolute; inset: 0; border-radius: 10px; z-index: 2; pointer-events: none;
+  background: radial-gradient(circle at calc(var(--mx) * 1%) calc(var(--my) * 1%), rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, .12) 24%, transparent 55%);
+  mix-blend-mode: soft-light; opacity: 0; transition: opacity .2s; }
+.tcg:hover .shine, .tcg.auto .shine { opacity: 1; }
+
+/* the foil rainbow: gradient bands sliding against the pointer, colour-dodged */
+.tcg .foil { position: absolute; inset: 7px; border-radius: 5px; z-index: 3; pointer-events: none; opacity: 0;
+  background:
+    repeating-linear-gradient(115deg, rgba(255, 60, 90, .75) 0%, rgba(255, 200, 60, .75) 7%, rgba(80, 235, 120, .75) 14%, rgba(60, 200, 255, .75) 21%, rgba(150, 90, 255, .75) 28%, rgba(255, 60, 90, .75) 35%),
+    radial-gradient(circle at calc(var(--mx) * 1%) calc(var(--my) * 1%), rgba(255, 255, 255, .9) 0%, transparent 45%);
+  background-size: 320% 320%, 100% 100%;
+  background-position: calc(var(--mx) * 1%) calc(var(--my) * 1%), 0 0;
+  mix-blend-mode: color-dodge; filter: saturate(1.35) contrast(1.05); transition: opacity .25s; }
+.tcg.foil .foil { opacity: .5; }
+.tcg.foil:hover .foil, .tcg.foil.auto .foil { opacity: .8; }
+.tcg.foil .inner::after { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, .8) .5px, transparent 1.2px); background-size: 9px 9px; opacity: .28; }
+
+/* badges used in the pack reveal */
+.tcg .badge { position: absolute; top: -9px; z-index: 4; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; padding: 2px 10px; border-radius: 999px; box-shadow: 0 3px 10px rgba(0, 0, 0, .4); }
+.tcg .badge.new { left: 10px; background: var(--ok); color: #0c1a10; }
+.tcg .badge.isfoil { right: 10px; background: linear-gradient(90deg, #ff5c7a, #ffc83c, #50eb78, #3cc8ff, #965aff); color: #17121f; }
+
+/* flip reveal in the pack overlay */
+.flip { perspective: 900px; width: 190px; }
+.flip .facewrap { position: relative; width: 100%; aspect-ratio: 5 / 7; transform-style: preserve-3d; transition: transform .55s cubic-bezier(.2, .7, .3, 1.1); }
+.flip.revealed .facewrap { transform: rotateY(180deg); }
+.flip .back, .flip .front { position: absolute; inset: 0; backface-visibility: hidden; }
+.flip .front { transform: rotateY(180deg); }
+.flip .back { border-radius: 10px; background: linear-gradient(160deg, #33245e 0%, #1c1430 55%, #2c2050 100%); border: 1px solid var(--line-2); display: grid; place-items: center; }
+.flip .back::before { content: ''; position: absolute; inset: 9px; border: 1px solid rgba(216, 171, 78, .4); border-radius: 7px; }
+.flip .back .seal { width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #e8c56a, #a3742a 70%); }
+.flip .tcg { width: 100%; }
